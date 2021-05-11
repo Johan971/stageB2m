@@ -13,6 +13,7 @@ PromiseBlue.promisifyAll(fs)
 PromiseBlue.promisifyAll(cp)
 
 
+const prompt = require('prompt')
 
 const app=express()
 
@@ -47,11 +48,12 @@ let dateObject= new Date()
 let date = ("0" + dateObject.getDate()).slice(-2)
 let month = ("0" + (dateObject.getMonth() + 1)).slice(-2)
 let year = dateObject.getYear()
+year=String(year).slice(1)
 let hours = dateObject.getHours()
 let minutes = dateObject.getMinutes()
 let seconds = dateObject.getSeconds()
-// console.log("date", `${date}/${month}/${year} at ${hours}h${minutes}:${seconds}`)
-let Jour=`${String(year).slice(1)}${month}${date}` //yyMMdd
+console.log("date", `${date}/${month}/${year} at ${hours}h${minutes}:${seconds}`)
+let Jour=`${year}${month}${date}` //yyMMdd
 // console.log(Jour)
 let logFile = `ExportVteLog-${Jour}.rtf`
 let pathExportGest="C:\\Gestion\\Lbm\\export"
@@ -83,9 +85,10 @@ let pathKRegl = pathBaseExportKw + `\\${Regl}`
 let pathKVenteFam=pathBaseExportKw +`\\${Vtesfam}`
 let pathGVente = pathExportGest + "\\VTE*.*"
 let pathGRegl = pathExportGest + "\\REG*.*"
+
 //==============================================================================
 
-// TODO COMMENCER le programme (un jour pour refaire l'ancien et peut etre commencer interface)
+//Fonctions
 const deleteFileIfExist= async(pathFile)=>{
 	fs.unlink(pathFile,e=>{})
 	
@@ -106,7 +109,7 @@ const copy1File=  async function(sourcePath, destFolder, fileDest, action="copy"
 		
 		if (fs.existsSync(String(destFolder))){
 
-			await fs.writeFileAsync(cheminLogFile,`Dossier ${destFolder} trouvé. \n`)
+			await fs.appendFileAsync(cheminLogFile,`Dossier ${destFolder} trouvé. \n`)
 			if (String(action).toUpperCase()=="MOVE"){
 				await fs.copyFileAsync(sourcePath,destPath)
 				await fs.unlinkAsync(sourcePath)
@@ -120,7 +123,7 @@ const copy1File=  async function(sourcePath, destFolder, fileDest, action="copy"
 		else{
 
 			console.log("Dossier de destination absent.")
-			fs.writeFileAsync(cheminLogFile,"Dossier de destination absent tentatice de création.\n")
+			fs.appendFileAsync(cheminLogFile,"Dossier de destination absent tentatice de création.\n")
 			await createFolderIfNotExist(destPath)
 		}
 		
@@ -131,13 +134,17 @@ const copy1File=  async function(sourcePath, destFolder, fileDest, action="copy"
 
 	}
 	catch(err){
-		fs.writeFileAsync(cheminLogFile,`Erreur copie fichier : ${sourcePath} vers ${destPath}`)
+		fs.appendFileAsync(cheminLogFile,`Erreur copie fichier : ${sourcePath} vers ${destPath}`)
 		throw err
 	}
 }
 
+//=============================================================================
+
+
 
 const main= async() =>{
+
 	try{
 		if(!fs.existsSync("C:\\Gestion")){
 			await createFolderIfNotExist("C:\\Gestion")
@@ -150,12 +157,14 @@ const main= async() =>{
 		}
 
 		if(fs.existsSync(cheminLogFile)){
-			// console.log("hi")
 			await fs.unlinkAsync(cheminLogFile)
+			await fs.writeFileAsync(cheminLogFile, `${date}/${month}/${year} at ${hours}h${minutes}:${seconds}. \n`)
+		
 			await fs.appendFileAsync(cheminLogFile,`Dossier de log ${cheminLogFile} écrasé.\n`)
+
 		}
 		
-		await fs.appendFileAsync(cheminLogFile, `\n${date}/${month}/${year} at ${hours}h${minutes}:${seconds}. \n`)
+		
 		
 	}catch(e){throw e}
 	
@@ -164,7 +173,7 @@ const main= async() =>{
 	if (String(a.slice(0,11))!="Information"){ //Si kwisatz n'est pas déja fermé
 		cp.execAsync('taskkill /F /IM kwisatz.exe')
 	}
-	// console.log("aaa", a)
+	
 	try{
 		await deleteFileIfExist(pathKVenteFam)
 		await deleteFileIfExist(pathKVente)
@@ -179,7 +188,7 @@ const main= async() =>{
 		
 	}catch(e){
 		try{
-			await fs.mkdirAsync(pathFichiersArchive) //ok
+			await fs.mkdirAsync(pathFichiersArchive)
 		}catch(er){
 			throw(er)
 		}
@@ -188,10 +197,7 @@ const main= async() =>{
 
 	try{
 		 
-		await require("./execAutomate.js").genTicketsVente()
-		
-		// await require("./test.js").copyy()
-		// await fs.access("D:\\WKW3\\$ZBASE\\EXPORT\\regl.txt", e=>{})
+		await cp.execAsync("D:\\WKW3\\kwisatz.exe -DZBASE -a120 -p99")
 		let KVTE= await fs.access(pathKVente,e=>{throw e})
 		let KREG= await fs.access(pathKRegl,e=>{throw e})
 		let KVTEF= await fs.access(pathKVenteFam,e=>{throw e})
@@ -252,8 +258,8 @@ const main= async() =>{
 	  if (error) {
 	    console.log(error)
 	  } else {
-	  	await fs.appendFileAsync(cheminLogFile,`Email bien envoyé.\n`)
-	    console.log('Email sent: ' + info.response);
+	  	fs.appendFileAsync(cheminLogFile,`Email bien envoyé.\n`)
+	    console.log('Email sent: ' + info.response)
 	  }
 	})
 	}catch(e){
@@ -262,8 +268,6 @@ const main= async() =>{
 }
 	
 main()
-
-
 // open('http://localhost:8080',{wait: true}) //ouvre interface
 process.on('uncaughtException', ()=>{serverHttps.close()})
 process.on('exit', ()=>{serverHttps.close()})
