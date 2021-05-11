@@ -1,2 +1,4 @@
 # stageB2m
-interface graphique nodejs faisant office de tableau de bord
+Projets réalisés en stage chez bém-consulting.
+script nodejs 
+interface tkinter
