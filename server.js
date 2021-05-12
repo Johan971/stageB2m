@@ -61,9 +61,9 @@ let logFolder = pathExportGest+"\\log" //CheminBaseArticle
 let cheminLogFile = `${logFolder}\\${logFile}`
 
 // Paths fichiers exports et archives
-let dossierBaseClient$= "$ZBASE" //Besoin pour la gestion de fichiers
-let dossierBaseClient= "ZBASE" //Besoin pour les commandes
-let disqueInstallationKwisatz= "D"
+let dossierBaseClient$= "$BASE" //Besoin pour la gestion de fichiers
+let dossierBaseClient= "BASE" //Besoin pour les commandes
+let disqueInstallationKwisatz= "C"
 let pathBaseExportKw = `${disqueInstallationKwisatz}:\\WKW3\\${dossierBaseClient$}\\EXPORT`
 let pathFichiersArchive=pathBaseExportKw + "\\Archives"
 // let pathKVente = pathBaseExportKw + "\\VTE*.*"
@@ -102,11 +102,8 @@ const createFolderIfNotExist= async(pathFile)=>{
 
 const copy1File=  async function(sourcePath, destFolder, fileDest, action="copy"){
 	try{
-		// console.log("on est là")
+		
 		let destPath=path.join(destFolder,fileDest)
-		// console.log("eeeeeee",sourcePath)
-		// let Aa=fs.existsSync(String(sourcePath))
-		// console.log(Aa)
 		
 		if (fs.existsSync(String(destFolder))){
 
@@ -137,11 +134,16 @@ const copy1File=  async function(sourcePath, destFolder, fileDest, action="copy"
 //=============================================================================
 
 const reportDeclaration= async()=>{
-	return {}
+	return {error:[]}
 }
 
 const main= async() =>{
-	report= await reportDeclaration()
+	try{
+		report= await reportDeclaration()
+	}
+	catch(err){
+		throw err
+	}
 	try{
 		if(!fs.existsSync("C:\\Gestion")){
 			await createFolderIfNotExist("C:\\Gestion")
@@ -186,16 +188,18 @@ const main= async() =>{
 		
 	}catch(e){
 		try{
+			
 			await fs.mkdirAsync(pathFichiersArchive)
 			report.path_Archives_Created= true
 		}catch(er){
-			throw(er)
+			console.log(er)
+			// throw(er)
 		}
 		
 	}
 
 	try{
-		await cp.execAsync("D:\\WKW3\\kwisatz.exe -DZBASE -a120 -p99")
+		await cp.execAsync(`${disqueInstallationKwisatz}:\\WKW3\\kwisatz.exe -DBASE -a120 -p99`)
 		let KVTE= await fs.access(pathKVente,e=>{throw e})
 		let KREG= await fs.access(pathKRegl,e=>{throw e})
 		let KVTEF= await fs.access(pathKVenteFam,e=>{throw e})
@@ -210,7 +214,8 @@ const main= async() =>{
 			report.error.generated_Files_Not_Found= true
 		
 		}catch(er){
-			throw er
+			console.log(er)
+			// throw er
 		}
 		
 	}
@@ -238,7 +243,7 @@ const main= async() =>{
 			await fs.appendFileAsync(cheminLogFile,`Erreur : Exportation des fichiers créés compromise.\nErreur:${e}\n`)
 			report.error.Error_copy=true
 		}catch(er){
-			throw er
+			console.log(er)
 		}
 	}
 
@@ -275,7 +280,7 @@ const main= async() =>{
 	  var textObjString=""
 	  for(let [key, value] of Object.entries(report)){
 	  	// console.log(typeof value)
-	  		  	if(report.error){
+	  		  	if(report.error.length>0){
 	  		var mailObj="Error: read the forwarding mail."
 	  		for(let [key, value] of Object.entries(report.error)){
 	  			if(String(typeof value)=="boolean"){
@@ -310,6 +315,7 @@ const main= async() =>{
 	  		console.log('Both emails sent: ' + info.response)
 
 	  	}
+	  	prompt.get(['Push a button to finish.'])
 	  })
 	})
 
