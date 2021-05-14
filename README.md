@@ -1,4 +1,2 @@
 # stageB2m
-Projets réalisés en stage chez b2m-consulting.
-- script nodejs 
-- interface tkinter
+Script permettant d'Upload des fichiers automatiquement des fichiers générés par kwisatz.
