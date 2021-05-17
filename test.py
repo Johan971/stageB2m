@@ -1,31 +1,18 @@
 #!/usr/bin/python
 
-"""
-ZetCode PyQt5 tutorial
+import sys, socket
+import PyQt6.QtWidgets as wd
+from PyQt6.QtWidgets import QApplication, QWidget
 
-In this example, we create a simple
-window in PyQt5.
+mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #(family,type)
 
-Author: Jan Bodnar
-Website: zetcode.com
-"""
+mySocket.bind = (("192.168.1.26", 12006))
 
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget
+# check = mySocket.connect_ex(location)
 
+while True:
+    data, addr = mySocket.recvfrom(1024)
+    print( addr[1])
+ 
 
-def main():
-
-    app = QApplication(sys.argv)
-
-    w = QWidget()
-    w.resize(250, 150)
-    w.move(300, 300)
-    w.setWindowTitle('Simple')
-    w.show()
-
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
+print(check)
