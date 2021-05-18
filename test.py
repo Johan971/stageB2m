@@ -1,18 +1,19 @@
 #!/usr/bin/python
 
-import sys, socket
+import sys, socket, time
 import PyQt6.QtWidgets as wd
 from PyQt6.QtWidgets import QApplication, QWidget
+import scapy.all as sm
 
-mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #(family,type)
+print("go")
 
-mySocket.bind = (("192.168.1.26", 12006))
+# a=sm.sniff(filter="ip",count=10)
 
-# check = mySocket.connect_ex(location)
+# a.nsummary()
 
-while True:
-    data, addr = mySocket.recvfrom(1024)
-    print( addr[1])
- 
+def arp_monitor_callback(pkt):
+	print(pkt.summary())
+	print("boom")
+	print(pkt.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"))
 
-print(check)
+sm.sniff(prn= arp_monitor_callback, filter="ip", store=0)
