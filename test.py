@@ -4,7 +4,7 @@ import sys, socket, time
 import PyQt6.QtWidgets as wd
 from PyQt6.QtWidgets import QApplication, QWidget
 import scapy.all as sm
-
+import os,shutil
 print("go")
 
 # a=sm.sniff(filter="ip",count=10)

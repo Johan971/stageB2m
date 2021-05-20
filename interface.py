@@ -4,6 +4,7 @@ import sys
 import PyQt6.QtWidgets as wd
 from PyQt6.QtWidgets import QApplication, QWidget
 
+
 class Fenetre(QWidget):
 	def __init__(self):
 		QWidget.__init__(self)

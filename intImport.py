@@ -7,13 +7,10 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import os
 
 
 class Ui_MainWindow(object):
-
-    def importing(self):
-        import intégrationBonDeCommande
-
     def setupUi(self, MainWindow):
 
         MainWindow.setObjectName("MainWindow")
@@ -59,10 +56,23 @@ class Ui_MainWindow(object):
 
         MainWindow.setCentralWidget(self.centralwidget)
         
-        self.BCAButton.clicked.connect(self.importing())
-
+        self.BCAButton.clicked.connect(self.importingBCA)
+        self.articlesButton.clicked.connect(self.importingArticles)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def importingArticles(self):
+        from integrationArticles import integration
+        
+        """input non toléré"""
+        articlesPath=input("Entrez le chemin des articles à récupérer :\n") #obligé parce qu'on sait pas la lettre
+        basePath=input("Entrez le chemin du dossier magasin (ex: 'D:\\WKW3\\$ZBASE') :\n")
+        integration(articlesPath,basePath)
+        # os.system("python integrationArticles.py")
+    
+    def importingBCA(self):
+        os.system("python integrationBonDeCommande.py")
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
