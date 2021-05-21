@@ -1,6 +1,9 @@
-import shutil, os
+import shutil, os, time
 from subprocess import Popen, PIPE
 import threading, queue
+from PyQt6 import QtCore
+import PyQt6
+
 def renaming(firstPath,basePath,pbar,label):
 	
 	# firstPath=input("Entrez le chemin des fichiers à intégrer :\n")
@@ -15,8 +18,6 @@ def renaming(firstPath,basePath,pbar,label):
 			if(str(fichiers)=="PDA_ANDROID"):
 				# print("raising")
 				raise PermissionError("PDA_ANDROID")
-				
-			# print(cpt*30//len(dossier),fichiers)
 			a=str(firstPath) +"\\"+ fichiers
 			dest= importFolder+"\\"+str(cpt)+"_"+"IMPORT.ASC"
 			shutil.copy2(a,dest)
@@ -39,44 +40,26 @@ def renaming(firstPath,basePath,pbar,label):
 			print(inst.args)
 			pbar.setValue(0)
 			return -1
-	label.setText("Cope des fichiers terminée.\nTransfert vers Kwisatz.")
+	label.setText("Copie des fichiers terminée.\nTransfert vers Kwisatz.")
 	return [importFolder,basePath]
 	
-
 	# print(str(a[2])[1::]) #trouver zbase
-	# input("Point d'arrêt, appuyez sur Entrée pour continuer et commencer l'intégration.\n")
+	
 	# =========Partie envoi avec automate
 def importing(importFolder,basePath,pbar,label):
-	locker=threading.Lock()
-	val=31
+	
+	val=30
 	pbar.setValue(val)
 	a=basePath.split("\\")
 	dossier=os.listdir(importFolder)
-	val+=1
-	pbar.setValue(val)
-	# print("Command: ","{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
-	cpt=1
-	print(dossier)
+	cpt=0
 	def cmd():
-		locker.acquire()
 		# proc = Popen(["{}:\\WKW3\\kwisatz.exe".format(basePath[0]), "-a142", "-d{}".format(str(a[2])[1::]), "-p99"], stdout=PIPE, stderr=PIPE, encoding='utf8', errors='ignore')
 		proc=os.system("{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
-		###Gerer la lenteur de l'exction de la commande
-		print("okokokok",proc)
-		locker.release()
-	th2=threading.Thread(target=cmd)
-
-	def renaming():
-		locker.acquire()
-		# filePath=os.path.join(importFolder,fichiers)
-		print("rrr")
-		# newFile=os.path.join(importFolder,"IMPORTDOC.ASC")
-		# print(filePath,"->",newFile)
-
-		# os.rename(filePath, newFile)
-		# print("renamed")
-		locker.release()
-	th1=threading.Thread(target=renaming)
+		
+		PyQt6.QtWidgets.QApplication.processEvents()
+		label.setText("Transfert éléments {}/{}.".format(cpt,len(dossier)))
+		return 1
 
 	for fichiers in dossier:
 		try:
@@ -84,7 +67,7 @@ def importing(importFolder,basePath,pbar,label):
 		except:
 			print("not a right file.")
 		try:
-			step=val+cpt*70//len(dossier) #de 30 à 70
+			step=30+cpt*70//len(dossier) #de 30 à 70
 			print(val,step)
 			pbar.setValue(step)
 			# print(str(fichiers))
@@ -95,23 +78,18 @@ def importing(importFolder,basePath,pbar,label):
 			pbar.setValue(step)
 			
 			filePath=os.path.join(importFolder,fichiers)
-			print("renaming")
 			newFile=os.path.join(importFolder,"IMPORTDOC.ASC")
 			print(filePath,"->",newFile)
 
 			os.rename(filePath, newFile)
-			print("renamed")
-
-			# print("humm",th2.started)
+			PyQt6.QtWidgets.QApplication.processEvents()
+			th2=threading.Thread(target=cmd)
 			th2.start()
-			th1.start()
+			PyQt6.QtWidgets.QApplication.processEvents()
 			th2.join()
-			th1.join()
-
-			print("apres th")
+			PyQt6.QtWidgets.QApplication.processEvents()
 			# os.system("{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 			pbar.setValue(step)
-			val+=1
 			cpt+=1
 			# os.rename(newFile, filePath) #we can't name to thing import.asc
 			# input("debug")
@@ -137,9 +115,6 @@ def importing(importFolder,basePath,pbar,label):
 			else:
 				label.setText(str(inst.args[0]))
 			return -1
-			# input("break debug")
+	pbar.setValue(100)
 	label.setText("Fin de l'exportation des bons de commandes.")
 	return 1
-
-
-# input("\nFin. Appuyez sur Entrée pour finir")
