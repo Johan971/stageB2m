@@ -1,5 +1,5 @@
 import shutil, os,threading
-from PyQt6 import QtWidgets
+from PyQt5 import QtWidgets
 def integration(articlesPath,basePath,pbar,label):
 	try:
 

@@ -1,8 +1,6 @@
-import shutil, os, time
-from subprocess import Popen, PIPE
+import shutil, os
 import threading, queue
-from PyQt6 import QtCore
-import PyQt6
+import PyQt5
 
 def renaming(firstPath,basePath,pbar,label):
 	
@@ -57,7 +55,7 @@ def importing(importFolder,basePath,pbar,label):
 		# proc = Popen(["{}:\\WKW3\\kwisatz.exe".format(basePath[0]), "-a142", "-d{}".format(str(a[2])[1::]), "-p99"], stdout=PIPE, stderr=PIPE, encoding='utf8', errors='ignore')
 		proc=os.system("{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 		
-		PyQt6.QtWidgets.QApplication.processEvents()
+		PyQt5.QtWidgets.QApplication.processEvents()
 		label.setText("Transfert éléments {}/{}.".format(cpt,len(dossier)))
 		return 1
 
@@ -82,12 +80,12 @@ def importing(importFolder,basePath,pbar,label):
 			print(filePath,"->",newFile)
 
 			os.rename(filePath, newFile)
-			PyQt6.QtWidgets.QApplication.processEvents()
+			PyQt5.QtWidgets.QApplication.processEvents()
 			th2=threading.Thread(target=cmd)
 			th2.start()
-			PyQt6.QtWidgets.QApplication.processEvents()
+			PyQt5.QtWidgets.QApplication.processEvents()
 			th2.join()
-			PyQt6.QtWidgets.QApplication.processEvents()
+			PyQt5.QtWidgets.QApplication.processEvents()
 			# os.system("{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 			pbar.setValue(step)
 			cpt+=1
