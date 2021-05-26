@@ -1,4 +1,4 @@
-import shutil, os,threading
+import os,threading
 from PyQt5 import QtWidgets
 def integration(articlesPath,basePath,pbar,label):
 	try:
@@ -7,13 +7,21 @@ def integration(articlesPath,basePath,pbar,label):
 		b=basePath.split("\\")
 		wkw3=os.path.dirname(basePath)
 		baseFolder=str(b[2])[1::]
-		
+		if not os.path.exists(articlesPath):
+			pbar.setValue(0)
+			label.setText("Dossier contenant article.dat non trouvé.")
+		if not os.path.exists("F://pute"):
+			print("boom")
+		if not os.path.exists(basePath):
+			pbar.setValue(0)
+			label.setText("Dossier {} non trouvé.".format(basePath))	
 		if (str(a[-1]).upper()!="ARTICLE.DAT"): #gestion si user fait rentrer article.dat ou pas
 			articlesPath=os.path.join(articlesPath,"article.dat")
 
 		# print("\nCONVERSION ET INTEGRATION DES ARTICLES VENANT DU SIEGE...\n")
 		pbar.setValue(2)
 		def execThread():
+			print("{} -PImpArtDdr2 -S{} -C{}".format(os.path.join(wkw3,"wkw_convert_ascii.exe"),articlesPath,os.path.join(basePath,"import")))
 
 			os.system("{} -PImpArtDdr2 -S{} -C{}".format(os.path.join(wkw3,"wkw_convert_ascii.exe"),articlesPath,os.path.join(basePath,"import")))
 			# print("{} -PImpArtDdr2 -S{} -C{}".format(os.path.join(wkw3,"wkw_convert_ascii.exe"),articlesPath,os.path.join(basePath,"import")))
@@ -27,15 +35,16 @@ def integration(articlesPath,basePath,pbar,label):
 
 		pbar.setValue(30)
 		QtWidgets.QApplication.processEvents()
+
 		os.system("{} -A129 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
-		# print("{} -A129 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
+		print("{} -A129 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
 		QtWidgets.QApplication.processEvents()
 
 		pbar.setValue(50)
 		# print("\nMISE À JOUR DES ARTICLES VERS LES CAISSES...\n")
 
 		label.setText("\nMise à jour des articles vers les caisses...\n")
-		# print("{} -A1 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
+		print("{} -A1 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
 		os.system("{} -A1 -D{} -P99".format(os.path.join(wkw3,"kwisatz.exe"),baseFolder))
 		QtWidgets.QApplication.processEvents()
 		pbar.setValue(80)
@@ -49,8 +58,10 @@ def integration(articlesPath,basePath,pbar,label):
 		
 		pbar.setValue(95)
 
+		
+
 	except Exception as inst:
-		strr="ERREUR:  "+str(inst.args[1])+"."
+		strr="ERREUR:  "+str(inst.args)+"."
 		label.setText(strr)
 		# print(inst.args)
 		pbar.setValue(0)

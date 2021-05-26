@@ -13,7 +13,7 @@ def exporting(basePath,pbar,label):
 		pbar.setValue(cpt)
 		label.setText("Execution de l'automate:\nVeuillez selectionner la période ainsi que les fichiers à exporter.")
 		a=basePath.split("\\")
-		proc=os.system("{}:\\WKW3\\kwisatz.exe -a31 -d{} -p99".format(basePath[0],str(a[2])[1::]))
+		proc=os.system("{}:\\WKW3\\kwisatz.exe -a30 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 		cpt=100
 		pbar.setValue(cpt)
 		PyQt5.QtWidgets.QApplication.processEvents()

@@ -30,14 +30,14 @@ def renaming(firstPath,basePath,pbar,label):
 				label.setText(strr)
 				print(inst.args)
 				pbar.setValue(0)
-				return -1
+				return strr
 
 		except Exception as inst:
 			strr="ERREUR:  "+str(inst.args[1])+"."
 			label.setText(strr)
 			print(inst.args)
 			pbar.setValue(0)
-			return -1
+			return strr
 	label.setText("Copie des fichiers terminée.\nTransfert vers Kwisatz.")
 	return [importFolder,basePath]
 	
@@ -52,6 +52,7 @@ def importing(importFolder,basePath,pbar,label):
 	dossier=os.listdir(importFolder)
 	cpt=0
 	def cmd():
+		print("importing")
 		# proc = Popen(["{}:\\WKW3\\kwisatz.exe".format(basePath[0]), "-a142", "-d{}".format(str(a[2])[1::]), "-p99"], stdout=PIPE, stderr=PIPE, encoding='utf8', errors='ignore')
 		proc=os.system("{}:\\WKW3\\kwisatz.exe -a142 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 		
@@ -70,6 +71,7 @@ def importing(importFolder,basePath,pbar,label):
 			pbar.setValue(step)
 			# print(str(fichiers))
 			if(str(fichiers)=="PDA_ANDROID"):
+				print("raising")
 				raise PermissionError("PDA_ANDROID")
 			# trying=type(int(fichiers[0])) #subteruge pour ne pas envoyer le dossier
 			
@@ -109,9 +111,9 @@ def importing(importFolder,basePath,pbar,label):
 			if (type(inst.args[0])==type(5)):
 				print("not",inst.args)
 				print(type(inst.args[0]))
-				label.setText(str(inst.args[1]))
+				label.setText(str(inst.args))
 			else:
-				label.setText(str(inst.args[0]))
+				label.setText(str(inst.args))
 			return -1
 	pbar.setValue(100)
 	label.setText("Fin de l'exportation des bons de commandes.")

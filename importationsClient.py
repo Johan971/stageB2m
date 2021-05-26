@@ -75,8 +75,8 @@ class Ui_MainWindow(object):
        
         # self.basePath="C:\\WKW3\\$ZBASE1"
         # self.articlesPath="C:\\Users\\SUPPORT_COMMERCIAL\\Downloads"
-        self.basePath="D:\\WKW3\\$BASE"
-        self.articlesPath="C:\\GESTION\\IMPORT\\article.dat"
+        self.basePath="C:\\WKW3\\$BASE"
+        self.articlesPath="C:\\GESTION\\B2M\\Import\\article.dat"
         self.intFilePath="C:\\wkw3\\$BASE\\Import"
     
     def importingArticles(self):
@@ -88,21 +88,25 @@ class Ui_MainWindow(object):
         # basePath=input("Entrez le chemin du dossier magasin (ex: 'D:\\WKW3\\$ZBASE') :\n")
         integration(self.articlesPath,self.basePath,self.pbar,self.label_2)
         
-        
-        
     
     def importingBCA(self):
 
-        if self.pbar.value()==100:
-            self.pbar.setValue(0)
+    	if self.pbar.value()==100:
+    		self.pbar.setValue(0)
 
-        paths=renaming(self.intFilePath,self.basePath,self.pbar,self.label_2)
-        if(len(paths)==2):
-            importing(paths[0],paths[1],self.pbar,self.label_2)
+    	paths=renaming(self.intFilePath,self.basePath,self.pbar,self.label_2)
+    	
+    	if(type(paths)==type([1,12])):
+    		if(len(paths)==2):
+    		  importing(paths[0],paths[1],self.pbar,self.label_2)
+
+    	elif (type(paths)==type("ee")):
+    		print(paths)
+    		self.label_2.setText(paths)
 
     def exportingBCA(self):
 
-    	exporting(self.basePath,self.pbar,self.label)
+       	exporting(self.basePath,self.pbar,self.label)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
