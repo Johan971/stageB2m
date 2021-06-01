@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-
-const express= require("express")
-const bodyParser= require("body-parser")
-const http = require("http")
 const path= require("path")
 const open = require('open')
 const cp = require("child_process")
@@ -11,29 +7,6 @@ const nodemailer = require('nodemailer')
 const PromiseBlue = require("bluebird")
 PromiseBlue.promisifyAll(fs)
 PromiseBlue.promisifyAll(cp)
-
-
-const prompt = require('prompt')
-
-const app=express()
-
-
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
-
-app.get("/",[
-	async( req, res, next)=>{
-		// console.log(path.join(__dirname, "./interface.html"))
-		res.sendFile(path.join(__dirname, "./interface.html"))
-	},
-	])
-
-const serverHttps= http.createServer(app)
-
-serverHttps.listen(8080,()=>{
-	console.log("server running at http://localhost:8080/")
-})
-
 
 //=== Infos expédition mail
 let expediteur = "travail.client@orange.fr"
@@ -56,14 +29,14 @@ let seconds = dateObject.getSeconds()
 console.log("date", `${date}/${month}/${year} at ${hours}h${minutes}:${seconds}`)
 let Jour=`${year}${month}${date}` //yyMMdd
 let logFile = `ExportVteLog-${Jour}.rtf`
-let pathExportGest="C:\\Gestion\\Lbm\\export"
+let pathExportGest="C:\\Gestion\\Meti\\export"
 let logFolder = pathExportGest+"\\log" //CheminBaseArticle
 let cheminLogFile = `${logFolder}\\${logFile}`
 
 // Paths fichiers exports et archives
-let dossierBaseClient$= "$BASE" //Besoin pour la gestion de fichiers
-let dossierBaseClient= "BASE" //Besoin pour les commandes
-let disqueInstallationKwisatz= "C"
+let dossierBaseClient$= "$ZBASE1" //Besoin pour la gestion de fichiers
+let dossierBaseClient= "ZBASE1" //Besoin pour les commandes
+let disqueInstallationKwisatz= "D"
 let pathBaseExportKw = `${disqueInstallationKwisatz}:\\WKW3\\${dossierBaseClient$}\\EXPORT`
 let pathFichiersArchive=pathBaseExportKw + "\\Archives"
 // let pathKVente = pathBaseExportKw + "\\VTE*.*"
@@ -199,10 +172,10 @@ const main= async() =>{
 	}
 
 	try{
-		await cp.execAsync(`${disqueInstallationKwisatz}:\\WKW3\\kwisatz.exe -DBASE -a120 -p99`)
-		let KVTE= await fs.access(pathKVente,e=>{throw e})
-		let KREG= await fs.access(pathKRegl,e=>{throw e})
-		let KVTEF= await fs.access(pathKVenteFam,e=>{throw e})
+		await cp.execAsync(`${disqueInstallationKwisatz}:\\WKW3\\kwisatz.exe -D${dossierBaseClient} -a120 -p99`)
+		let KVTE= await fs.access(pathKVente,e=>{console.log("error:",e)})
+		let KREG= await fs.access(pathKRegl,e=>{console.log("error:",e)})
+		let KVTEF= await fs.access(pathKVenteFam,e=>{console.log("error:",e)})
 		report.automaton129_Executed= true
 		await fs.appendFileAsync(cheminLogFile, `Fichiers générés trouvés dans le dossier.\n`)
 
@@ -315,7 +288,6 @@ const main= async() =>{
 	  		console.log('Both emails sent: ' + info.response)
 
 	  	}
-	  	prompt.get(['Push a button to finish.'])
 	  })
 	})
 
@@ -326,5 +298,3 @@ const main= async() =>{
 	
 main()
 // open('http://localhost:8080',{wait: true}) //ouvre interface
-process.on('uncaughtException', ()=>{serverHttps.close()})
-process.on('exit', ()=>{serverHttps.close()})
