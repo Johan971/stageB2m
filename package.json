@@ -28,6 +28,7 @@
     "once": "^1.4.0",
     "open": "^8.2.0",
     "path-is-absolute": "^1.0.1",
+    "pkg": "^5.2.1",
     "prompt": "^1.1.0",
     "read": "^1.0.7",
     "revalidator": "^0.1.8",

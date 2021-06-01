@@ -34,9 +34,9 @@ let logFolder = pathExportGest+"\\log" //CheminBaseArticle
 let cheminLogFile = `${logFolder}\\${logFile}`
 
 // Paths fichiers exports et archives
-let dossierBaseClient$= "$ZBASE1" //Besoin pour la gestion de fichiers
-let dossierBaseClient= "ZBASE1" //Besoin pour les commandes
-let disqueInstallationKwisatz= "D"
+let dossierBaseClient$= "$CENT" //Besoin pour la gestion de fichiers
+let dossierBaseClient= "ZCENT" //Besoin pour les commandes
+let disqueInstallationKwisatz= "C"
 let pathBaseExportKw = `${disqueInstallationKwisatz}:\\WKW3\\${dossierBaseClient$}\\EXPORT`
 let pathFichiersArchive=pathBaseExportKw + "\\Archives"
 // let pathKVente = pathBaseExportKw + "\\VTE*.*"
@@ -122,10 +122,17 @@ const main= async() =>{
 			await createFolderIfNotExist("C:\\Gestion")
 			await createFolderIfNotExist("C:\\Gestion\\Lbm")
 			await createFolderIfNotExist("C:\\Gestion\\Meti")
+
+			await createFolderIfNotExist("C:\\Gestion\\Meti\\Export")
+			await createFolderIfNotExist("C:\\Gestion\\Meti\\Import")
+			await createFolderIfNotExist("C:\\Gestion\\Meti\\Export\\Log")
+			await createFolderIfNotExist("C:\\Gestion\\Meti\\Export\\Archives")
+
 			await createFolderIfNotExist("C:\\Gestion\\Lbm\\Export")
 			await createFolderIfNotExist("C:\\Gestion\\Lbm\\Import")
 			await createFolderIfNotExist("C:\\Gestion\\Lbm\\Export\\Log")
 			await createFolderIfNotExist("C:\\Gestion\\Lbm\\Export\\Archives")
+
 			report.gestion_Folder_Created= true 
 		}
 
