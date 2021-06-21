@@ -3,7 +3,7 @@
 import os, subprocess,time,asyncio,concurrent.futures
 import scapy.all as sm
 
-timeMax=300
+timeMax=50
 serviceName = "BCOMM_BASETES"
 
 nssmFolder = "C:\\Users\\SUPPORT_COMMERCIAL\\Downloads\\nssm-2.24-101-g897c7ad\\win64"
@@ -27,12 +27,8 @@ async def checkingProcess():
 	return str(ret.stdout.decode("utf-8")).replace("\r", "").replace("\n", "")
 
 
-def fun():
-	print("maco")
-	time.sleep(5)
-
 def wiresharking(chrono):
-	print(chrono) 
+
 	def callback(pkt):
 
 		print("\n\n\ncb=============")
@@ -81,42 +77,47 @@ def main():
 
 			while (returnValue=="SERVICE_RUNNING" and chrono.chrono<=timeMax):
 
-			
 				executor.submit(wiresharking,chrono)
-				await asyncio.sleep(1)
-
+				await asyncio.sleep(0.5)
 				chrono.checkingTime()
 				print("chrono",chrono.chrono)
-
 				returnValue=await checkingProcess()
+				print("l.93")
 
-		
 				while returnValue!="SERVICE_RUNNING":
 					print("ERREUR : service stoppé !")
+					chrono.reinit()
 					returnValue = await checkingProcess()
 
-		# print("\n\n============jesors================\n\n")
+			while(chrono.chrono>=timeMax):
 
-		while returnValue!="SERVICE_RUNNING":
-
-			print("ERREUR :  service stoppé !")
-
-			returnValue = await checkingProcess()
-			while (returnValue=="SERVICE_RUNNING" and chrono.chrono<=timeMax):
-
-				wiresharking(chrono)
+				print("\n\n=====FROZEN=====")
 				chrono.checkingTime()
-				returnValue=await checkingProcess()
+				await asyncio.sleep(0.5)
+				wiresharking(chrono)
+			# print("\n\n============jesors================\n\n")
 
-				while chrono>=timeMax:
-					wiresharking(chrono)
-					print("frozen")
+		with concurrent.futures.ThreadPoolExecutor() as executor:
+
+			while returnValue!="SERVICE_RUNNING":
+
+				print("ERREUR :  service stoppé !")
+				chrono.reinit()
+				returnValue = await checkingProcess()
+
+				while (returnValue=="SERVICE_RUNNING" and chrono.chrono<=timeMax):
+
+					executor.submit(wiresharking,chrono)
+					await asyncio.sleep(0.5)
 					chrono.checkingTime()
+					print("chrono",chrono.chrono)
+					returnValue=await checkingProcess()
+					print("l.93")
 
-		while chrono.chrono>=timeMax:
-			wiresharking(chrono)
-			print("frozen")
-			chrono.checkingTime()
+				while chrono.chrono>=timeMax:
+					wiresharking(chrono)
+					print("=====Frozen=====")
+					chrono.checkingTime()
 	asyncio.run(functionn())
 
 
