@@ -7,7 +7,11 @@ def renaming(firstPath, basePath, pbar, label):
 
 	# firstPath=input("Entrez le chemin des fichiers à intégrer :\n")
 	# basePath=input("Entrez le chemin du dossier magasin (ex: 'D:\\WKW3\\$ZBASE') :\n")
-	dossier = os.listdir(firstPath)
+	
+	try:
+		dossier = os.listdir(firstPath)
+	except:
+		label.setText("Dossier {} introuvable\nImpossible d'intégrer les BCA.")
 	importFolder = os.path.join(basePath, "IMPORT")
 	cpt = 1
 	pbar.setValue(cpt)
@@ -73,7 +77,7 @@ def importing(importFolder, basePath, pbar, label):
 			print("not a right file.")
 		try:
 			step = 30 + cpt * 70 // len(dossier)  # de 30 à 70
-			print(val, step)
+			# print(val, step)
 			pbar.setValue(step)
 			# print(str(fichiers))
 			if str(fichiers) == "PDA_ANDROID":

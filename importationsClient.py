@@ -1,6 +1,6 @@
 # THREAD CAN ONLY BE STARTED ONCE : aaaahhhhhh il faut le renommer à chaque fois !!!!???????
 
-
+import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from integrationBonDeCommande import renaming, importing
 from integrationArticles import integration
@@ -78,23 +78,37 @@ class Ui_MainWindow(object):
 		self.retranslateUi(MainWindow)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+		self.articlesPath = "C:\\GESTION\\B2M\\Import\\article.dat"
+		self.intFilePath = "C:\\GESTION\\METI\\IMPORT"
+		self.basePathh="\\wkw3\\$BASE\\"
+		self.messageBox()
 		# self.basePath="C:\\WKW3\\$ZBASE1"
 		# self.articlesPath="C:\\Users\\SUPPORT_COMMERCIAL\\Downloads"
-		self.basePath = "C:\\WKW3\\$BASE"
-		self.articlesPath = "C:\\GESTION\\B2M\\Import\\article.dat"
-		self.intFilePath = "C:\\wkw3\\$BASE\\Import"
+		# self.basePath = "C:\\WKW3\\$BASE"
+		
+	def messageBox(self):
+		text, ok = QtWidgets.QInputDialog.getText(self.centralwidget, 'input dialog', "Entrez le chemin d'installation du dossier magasin:\n(ex D://wkw3/$BASE).")
+		if ok:
+			self.basePath =str(text)
 
+			if not os.path.exists(self.basePath):
+				self.label_2.setText("Erreur : Dossier {} non trouvé.\nValeur par défaut choisie : C:\\WKW3\\$BASE.".format(self.basePath))
+				self.basePath="C:"+self.basePathh
+		else:
+			self.basePath="C:"+self.basePathh
+	
 	def importingArticles(self):
 		# from integrationArticles import integration
 		if self.pbar.value() == 100:
 			self.pbar.setValue(0)
+
 		"""input non toléré"""
 		# articlesPath=input("Entrez le chemin des articles à récupérer :\n") #obligé parce qu'on sait pas la lettre
 		# basePath=input("Entrez le chemin du dossier magasin (ex: 'D:\\WKW3\\$ZBASE') :\n")
 		integration(self.articlesPath, self.basePath, self.pbar, self.label_2)
 
 	def importingBCA(self):
-
+		
 		if self.pbar.value() == 100:
 			self.pbar.setValue(0)
 

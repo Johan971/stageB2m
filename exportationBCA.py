@@ -1,7 +1,5 @@
-import shutil, os, time
-from subprocess import Popen, PIPE
-import threading, queue
-from PyQt5 import QtCore
+import os
+
 import PyQt5
 
 def exporting(basePath,pbar,label):
@@ -13,7 +11,7 @@ def exporting(basePath,pbar,label):
 		pbar.setValue(cpt)
 		label.setText("Execution de l'automate:\nVeuillez selectionner la période ainsi que les fichiers à exporter.")
 		a=basePath.split("\\")
-		proc=os.system("{}:\\WKW3\\kwisatz.exe -a30 -d{} -p99".format(basePath[0],str(a[2])[1::]))
+		os.system("{}:\\WKW3\\kwisatz.exe -a30 -d{} -p99".format(basePath[0],str(a[2])[1::]))
 		cpt=100
 		pbar.setValue(cpt)
 		PyQt5.QtWidgets.QApplication.processEvents()

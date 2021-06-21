@@ -12,8 +12,7 @@ def integration(articlesPath, basePath, pbar, label):
 		if not os.path.exists(articlesPath):
 			pbar.setValue(0)
 			label.setText("Dossier contenant article.dat non trouvé.")
-		if not os.path.exists("F://pute"):
-			print("boom")
+	
 		if not os.path.exists(basePath):
 			pbar.setValue(0)
 			label.setText("Dossier {} non trouvé.".format(basePath))
