@@ -87,7 +87,7 @@ class Ui_MainWindow(object):
 		# self.basePath = "C:\\WKW3\\$BASE"
 		
 	def messageBox(self):
-		text, ok = QtWidgets.QInputDialog.getText(self.centralwidget, 'input dialog', "Entrez le chemin d'installation du dossier magasin:\n(ex D://wkw3/$BASE).")
+		text, ok = QtWidgets.QInputDialog.getText(self.centralwidget, 'input dialog', "Entrez le chemin d'installation du dossier magasin:\n(ex D:\\wkw3\\$BASE).")
 		if ok:
 			self.basePath =str(text)
 
@@ -98,17 +98,19 @@ class Ui_MainWindow(object):
 			self.basePath="C:"+self.basePathh
 	
 	def importingArticles(self):
+		self.articlesButton.setStyleSheet("background-color:#dce3e9;border: 0px solid grey ")
 		# from integrationArticles import integration
 		if self.pbar.value() == 100:
 			self.pbar.setValue(0)
-
+		self.articlesButton.setStyleSheet("")
 		"""input non toléré"""
 		# articlesPath=input("Entrez le chemin des articles à récupérer :\n") #obligé parce qu'on sait pas la lettre
 		# basePath=input("Entrez le chemin du dossier magasin (ex: 'D:\\WKW3\\$ZBASE') :\n")
 		integration(self.articlesPath, self.basePath, self.pbar, self.label_2)
 
 	def importingBCA(self):
-		
+
+		self.BCAButton.setStyleSheet("background-color:#dce3e9;border: 0px solid grey ")
 		if self.pbar.value() == 100:
 			self.pbar.setValue(0)
 
@@ -121,10 +123,12 @@ class Ui_MainWindow(object):
 		elif type(paths) == type("ee"):
 			print(paths)
 			self.label_2.setText(paths)
-
+		self.BCAButton.setStyleSheet("")
 	def exportingBCA(self):
 
+		self.exportButton.setStyleSheet("background-color:#dce3e9;border: 0px solid grey ")
 		exporting(self.basePath, self.pbar, self.label)
+		self.exportButton.setStyleSheet("")
 
 	def retranslateUi(self, MainWindow):
 		_translate = QtCore.QCoreApplication.translate
