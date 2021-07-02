@@ -1,4 +1,4 @@
 # stageB2m
 
-interface graphique python Pyqt afin d'automatiser des tâches coté client.
+PLusieurs interface graphiques python Pyqt afin d'automatiser des tâches coté client ainsi que de controler l'Etat de processus.
 
