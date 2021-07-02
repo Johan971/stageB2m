@@ -3,6 +3,7 @@ import threading
 import PyQt5
 
 
+# Renaming and moving files to the right path
 def renaming(firstPath, basePath, pbar, label):
 
 	# firstPath=input("Entrez le chemin des fichiers à intégrer :\n")
@@ -83,7 +84,7 @@ def importing(importFolder, basePath, pbar, label):
 			if str(fichiers) == "PDA_ANDROID":
 				print("raising")
 				raise PermissionError("PDA_ANDROID")
-			# trying=type(int(fichiers[0])) #subteruge pour ne pas envoyer le dossier
+			# trying=type(int(fichiers[0])) #subteruge pour ne pas envoyer le dossier doit etre améliorer
 
 			pbar.setValue(step)
 

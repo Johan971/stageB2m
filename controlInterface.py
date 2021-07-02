@@ -28,7 +28,7 @@ class Chrono():
 		self.initialisation=time.time()
 
 
-#========================================================================GLOBAL VARIABLES==========================================================================#
+#======================================================================== GLOBAL VARIABLES ==========================================================================#
 
 timeMax=5
 serviceName = "BCOMM_BASETES"
@@ -37,7 +37,7 @@ state=windowState()
 chrono=Chrono()
 #===============================================================================================================================================================#
 
-#======================================================================DECLARATION===========================================================================#
+#====================================================================== DECLARATION ===========================================================================#
 
 #checking if BCOMM service is running
 async def checkingProcess():
@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
 
 	def processDead(self):
 		self.MainWindow.setStyleSheet("background-color: red;")
-		self.label.setText("BCOMM/FCOMM pas en exécution \nDernier packet reçu il y a {} secondes".format(int(chrono.chrono)))
+		self.label.setText("BCOMM/FCOMM en non exécution \nDernier packet reçu il y a {} secondes".format(int(chrono.chrono)))
 		
 	def retranslateUi(self):
 		_translate = QtCore.QCoreApplication.translate
@@ -222,7 +222,7 @@ if __name__ == "__main__":
 	ui = Ui_MainWindow()
 	ui.setupUi(MainWindow)
 	MainWindow.setWindowIcon(QtGui.QIcon("b2m.ico"))
-	MainWindow.show()
 	sys.exit(app.exec())
+	MainWindow.show()
 
 #===============================================================================================================================================================#

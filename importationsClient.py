@@ -1,4 +1,3 @@
-# THREAD CAN ONLY BE STARTED ONCE : aaaahhhhhh il faut le renommer à chaque fois !!!!???????
 
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -79,7 +78,7 @@ class Ui_MainWindow(object):
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 		self.articlesPath = "C:\\GESTION\\B2M\\Import\\article.dat"
-		self.intFilePath = "C:\\GESTION\\METI\\IMPORT"
+		self.intFilePath = "C:\\GESTION\\B2M\\IMPORT"
 		self.basePathh="\\wkw3\\$BASE\\"
 		self.messageBox()
 		# self.basePath="C:\\WKW3\\$ZBASE1"

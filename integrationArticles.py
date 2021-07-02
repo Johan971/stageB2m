@@ -89,7 +89,7 @@ def integration(articlesPath, basePath, pbar, label):
 
 if __name__ == "__main__":
 
-	"""===========SUPPRIMER LE 3e ARGUMENT ET TOUT CE QUI CONCERNE LE LABEL============="""
+	"""===========SUPPRIMER LE 3e et 4e ARGUMENT ET TOUT CE QUI LES CONCERNE============="""
 
 	articlesPath = input(
 		"Entrez le chemin des articles à récupérer :\n"
