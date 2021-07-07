@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer')
 const PromiseBlue = require("bluebird")
 PromiseBlue.promisifyAll(fs)
 PromiseBlue.promisifyAll(cp)
+// const prompt = require('prompt-sync')()
 
 //=== Infos expédition mail
 let expediteur = "travail.client@orange.fr"
@@ -35,7 +36,10 @@ let cheminLogFile = `${logFolder}\\${logFile}`
 
 // Paths fichiers exports et archives
 let dossierBaseClient$= "$CENT" //Besoin pour la gestion de fichiers
-let dossierBaseClient= "ZCENT" //Besoin pour les commandes
+
+dossierBaseClient= dossierBaseClient$.slice(1,dossierBaseClient$.length)  //Besoin pour les commandes
+console.log(dossierBaseClient)
+
 let disqueInstallationKwisatz= "C"
 let pathBaseExportKw = `${disqueInstallationKwisatz}:\\WKW3\\${dossierBaseClient$}\\EXPORT`
 let pathFichiersArchive=pathBaseExportKw + "\\Archives"
