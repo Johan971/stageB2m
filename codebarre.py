@@ -46,6 +46,7 @@ def main():
 						
 					# input("ee")
 				except ValueError:
+					print(traceback.format_exc())
 					pass
 				# except:
 				# 	print(traceback.format_exc())
