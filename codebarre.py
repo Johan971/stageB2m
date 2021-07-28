@@ -27,7 +27,7 @@ def main():
 					if (type(int(row[0]))!=type(55) and spamreader.line_num!=1 ):
 						print("\n\npasssssinnnng")
 						print(row)
-						input("r")
+						# input("r")
 					elif (10<len(str(row[0]))<13):
 
 						numberOf0=13-len(str(row[0]))
@@ -36,9 +36,9 @@ def main():
 						for i in range(numberOf0):
 							zeros+="0"
 
-						print("zz",row[0])
+						# print("zz",row[0])
 						row[0]=str(zeros)+ str(row[0])
-						print("eeeee",row)
+						# print("eeeee",row)
 						writer.writerow(row)
 					else:
 						writer.writerow(row)

@@ -3,7 +3,7 @@ import os,traceback, itertools
 # MLF_31803B.dat
 
 ## ============================ VARIABLES DECLARATION ======================= ##
-file = open(os.path.join(os.getcwd(),"WFM181035A.dat"))
+file = open(os.path.join(os.getcwd(),"MLF_31803B.dat"))
 
 content=file.read()
 fileHeader=content[0:3]
@@ -86,7 +86,14 @@ def main():
 				output.write("|")
 				output.write(refFourni+"|") #no libelle produit
 				output.write("|")
-				output.write(line[37:49]) #bad quantity but whatever
+				try:
+					pcb=int(line[86:92])
+					nbrCol=int(line[49:65])
+					quantity=pcb*nbrCol
+					# input(quantity)
+				except :
+					print(traceback.format_exc())
+				output.write(str(quantity)) #good quantity
 				output.write("|")
 				output.write(line[204:217]+"|")
 				output.write("|")
@@ -119,17 +126,17 @@ def main():
 			output.write("|")
 			output.write(line[88:101]) #EAN13
 			output.write("|")
-			output.write("9999999999999") #dont have
+			# output.write("") #dont have
 			output.write("|") 
 			output.write(line[58:88]) #libellé article
 			output.write("|")
 			output.write(line[101:105]) #quantite
 			output.write("|")
-			output.write(line[126:137]+"|") #PUHT
+			output.write("000"+line[126:137]+"|") #PUHT
 			output.write("|")
 			output.write(line[137]) #codeTVA
 			output.write("|")
-			output.write(line[138:149]) #PUTTC
+			output.write("000"+line[138:149]) #PUTTC
 			output.write("\n")
 
 

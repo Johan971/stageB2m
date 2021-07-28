@@ -2,10 +2,10 @@
 from openpyxl import load_workbook
 import os, pyexcel
 import pandas as pd
+
 for i in range(1,11):
 	sheet = pyexcel.get_sheet(file_name="article{}.csv".format(i), delimiter=";")
 	sheet.save_as("article{}.xlsx".format(i))
-	# input("ok chelou ")
 	wb= load_workbook((os.path.join(os.getcwd(), "article{}.xlsx".format(i))))
 
 	# print("l.27")
