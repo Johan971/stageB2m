@@ -3,7 +3,7 @@ import os,traceback, itertools
 # MLF_31803B.dat
 
 ## ============================ VARIABLES DECLARATION ======================= ##
-file = open(os.path.join(os.getcwd(),"MLF_31803B.dat"))
+file = open(os.path.join(os.getcwd(),"WFM181035A.dat"))
 
 content=file.read()
 fileHeader=content[0:3]
@@ -13,7 +13,7 @@ nLines=content.count("\n")
 output=open("output.asc","w")
 lineCounter=0
 ## =========================== FUNCTIONS ================================ ##
-def MLFpreProcessing(): #cut the file in several lines to a list
+def MLFpreProcessing(): #cut the file in several lines and return a list
 	headlines=content.count("FFE")
 	fLists=[content]
 	if headlines>1:
@@ -104,7 +104,20 @@ def main():
 	elif WFM:
 		print("wfm")
 		cList=WFMpreProcessing()
-		codeClientFourni="00"+str(cList[0][26:32])
+		codeClientFourniAS400=cList[0][1:3]
+		try:
+			if(int(cList[0][0])==1):
+				correspondance={"22":"164","10":"154","40":"135"}
+			elif(int(cList[0][0])==2):
+				correspondance={"20":"3","10":"2","30":"4","35":"90019","65":"90053"}
+			else:
+				print("mauvais code région détecté")
+				raise ValueError
+		except:
+			print(traceback.format_exc())
+
+		# input(codeClientFourni)
+		# codeClient="00"+str(cList[0][26:32])
 		dateDoc=cList[0][24:26] + cList[0][22:24] + cList[0][18:22]
 		codeMagasin=cList[0][3:5]
 		numeroDoc=cList[0][8:18]
@@ -112,7 +125,12 @@ def main():
 		# print("codeClientFourni {}\n datedoc {}\n codeMagasin {}\n numeroDoc {}\n".format(codeClientFourni,dateDoc,codeMagasin,numeroDoc))
 		
 		output.write("BRA|E|||")
-		output.write(codeClientFourni)
+		try:
+			output.write(correspondance[str(codeClientFourniAS400)])
+			# print(correspondance[str(codeClientFourniAS400)])
+		except:
+			print(traceback.format_exc())
+		
 		output.write("|")
 		output.write(dateDoc)
 		output.write("|")
@@ -130,7 +148,10 @@ def main():
 			output.write("|") 
 			output.write(line[58:88]) #libellé article
 			output.write("|")
-			output.write(line[101:105]) #quantite
+			
+			quantity=int(line[105:111])*int(line[101:105]) #quantité uc (modifiée)* nbr colis
+			output.write(str(quantity)) #quantite
+
 			output.write("|")
 			output.write("000"+line[126:137]+"|") #PUHT
 			output.write("|")
