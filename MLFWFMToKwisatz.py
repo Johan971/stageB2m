@@ -3,7 +3,7 @@ import os,traceback, itertools
 # MLF_31803B.dat
 
 ## ============================ VARIABLES DECLARATION ======================= ##
-file = open(os.path.join(os.getcwd(),"WFM181035A.dat"))
+file = open(os.path.join(os.getcwd(),"MLF_31803B.dat"))
 
 content=file.read()
 fileHeader=content[0:3]
@@ -65,12 +65,17 @@ def main():
 
 		# headercounter=0
 		docDate=str(cList[0][17:19]+cList[0][15:17]+cList[0][11:15])
-		refFourni=str(cList[1][16:24])
+		refFourni=str(cList[1][22:24])
+		# input(refFourni)
+		correspondance={"20":"3","19":"2","30":"4","35":"90019","65":"90053","22":"164","54":"154","40":"135"}
 		
 		for line in cList:
 			if line[0:3]=="FFE":
 				output.write("FAA|E|||")
-				output.write(refFourni) #société emetrice =code client ou fournisseur
+				try:
+					output.write(correspondance[refFourni]) #société emetrice =code client ou fournisseur
+				except:
+					print(traceback.format_exc())
 				output.write("|")
 				output.write(docDate)
 				output.write("|")
@@ -84,7 +89,7 @@ def main():
 				output.write("FAA|C|")
 				output.write(line[23:36]) #EAN13
 				output.write("|")
-				output.write(refFourni+"|") #no libelle produit
+				output.write("|") #no libelle produit
 				output.write("|")
 				try:
 					pcb=int(line[86:92])
@@ -95,10 +100,11 @@ def main():
 					print(traceback.format_exc())
 				output.write(str(quantity)) #good quantity
 				output.write("|")
-				output.write(line[204:217]+"|")
+				input(line[190:203])
+				output.write(line[190:203]+"|") #price
 				output.write("|")
 				output.write("|")
-				output.write(line[190:203])
+				# output.write(line[190:203])
 				output.write("\n")
 
 	elif WFM:
@@ -107,9 +113,9 @@ def main():
 		codeClientFourniAS400=cList[0][1:3]
 		try:
 			if(int(cList[0][0])==1):
-				correspondance={"22":"164","10":"154","40":"135"}
+				correspondance={"22":"164","54":"154","40":"135"}
 			elif(int(cList[0][0])==2):
-				correspondance={"20":"3","10":"2","30":"4","35":"90019","65":"90053"}
+				correspondance={"20":"3","19":"2","30":"4","35":"90019","65":"90053"}
 			else:
 				print("mauvais code région détecté")
 				raise ValueError
