@@ -153,11 +153,17 @@ def main():
 			output.write(str(quantity)) #quantite
 
 			output.write("|")
-			output.write("000"+line[126:137]+"|") #PUHT
+			 #PUHT
+			
+			tmpPrice=str(int(line[114:125]))
+			price=tmpPrice[0:(len(tmpPrice)-2)]+"."+tmpPrice[-2]+tmpPrice[-1]
+			# input(price)
+			output.write(price+"|")
+
 			output.write("|")
 			output.write(line[137]) #codeTVA
 			output.write("|")
-			output.write("000"+line[138:149]) #PUTTC
+			# output.write("000"+line[138:149]) #PUTTC
 			output.write("\n")
 
 
