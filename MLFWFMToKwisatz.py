@@ -1,9 +1,10 @@
-import os,traceback, itertools
+import traceback, itertools
 # WFM181035A.dat
 # MLF_31803B.dat
 
 ## ============================ VARIABLES DECLARATION ======================= ##
-file = open(os.path.join(os.getcwd(),"MLF_31803B.dat"))
+entree=input("Entrez le chemin du fichier à traiter :\n")
+file = open(entree)
 
 content=file.read()
 fileHeader=content[0:3]
@@ -100,7 +101,7 @@ def main():
 					print(traceback.format_exc())
 				output.write(str(quantity)) #good quantity
 				output.write("|")
-				input(line[190:203])
+				# input(line[190:203])
 				output.write(line[190:203]+"|") #price
 				output.write("|")
 				output.write("|")
@@ -109,8 +110,11 @@ def main():
 
 	elif WFM:
 		print("wfm")
+		print("\nImpossible de traiter les WFM : pas de reference fournisseur (autre(s) erreur(s) dans le document).")
+		return -1
 		cList=WFMpreProcessing()
 		codeClientFourniAS400=cList[0][1:3]
+		input(codeClientFourniAS400)
 		try:
 			if(int(cList[0][0])==1):
 				correspondance={"22":"164","54":"154","40":"135"}
@@ -132,6 +136,7 @@ def main():
 		
 		output.write("BRA|E|||")
 		try:
+			input(correspondance[str(codeClientFourniAS400)])
 			output.write(correspondance[str(codeClientFourniAS400)])
 			# print(correspondance[str(codeClientFourniAS400)])
 		except:
@@ -175,3 +180,5 @@ def main():
 
 if __name__=="__main__":
 	main()
+
+# aaa="C:\Users\Asus\Desktop\Projects\stageB2m\MLF_31803B.dat"
