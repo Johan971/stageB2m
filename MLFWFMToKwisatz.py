@@ -4,7 +4,7 @@ import traceback, itertools
 
 ## ============================ VARIABLES DECLARATION ======================= ##
 entree=input("Entrez le chemin du fichier à traiter :\n")
-file = open(entree)
+file = open(str(entree))
 
 content=file.read()
 fileHeader=content[0:3]
@@ -12,7 +12,7 @@ nLines=content.count("\n")
 # input(nLines)
 
 output=open("output.asc","w")
-lineCounter=0
+
 ## =========================== FUNCTIONS ================================ ##
 def MLFpreProcessing(): #cut the file in several lines and return a list
 	headlines=content.count("FFE")
@@ -22,7 +22,7 @@ def MLFpreProcessing(): #cut the file in several lines and return a list
 		for i in range(len(fLists)):
 			if i>0:			
 				# input(fLists[i])
-				tmpstr="FFE" + str(fLists[i]) #putting back the missing elmnt
+				tmpstr="FFE" + str(fLists[i])  # putting back the missing elmnt
 				fLists[i]=tmpstr
 		# input(fLists)
 	for i in range(len(fLists)):
@@ -52,7 +52,7 @@ def main():
 	MLF=False
 	# docCharFinder(5,6)
 	try:
-		if type(int(fileHeader))==type(55):
+		if type(int(fileHeader))==type(5):
 			WFM=True
 
 	except ValueError:
@@ -113,8 +113,8 @@ def main():
 		print("\nImpossible de traiter les WFM : pas de reference fournisseur (autre(s) erreur(s) dans le document).")
 		return -1
 		cList=WFMpreProcessing()
-		codeClientFourniAS400=cList[0][1:3]
-		input(codeClientFourniAS400)
+		codeFourniAS400=cList[0][1:3] #pas bon : correspond au code region 
+		input(codeFourniAS400)
 		try:
 			if(int(cList[0][0])==1):
 				correspondance={"22":"164","54":"154","40":"135"}
@@ -131,14 +131,15 @@ def main():
 		dateDoc=cList[0][24:26] + cList[0][22:24] + cList[0][18:22]
 		codeMagasin=cList[0][3:5]
 		numeroDoc=cList[0][8:18]
+		
 
-		# print("codeClientFourni {}\n datedoc {}\n codeMagasin {}\n numeroDoc {}\n".format(codeClientFourni,dateDoc,codeMagasin,numeroDoc))
+		# print("codeClientFourni {}\n datedoc {}\n codeMagasin {}\n numeroDoc {}\n".format(codeFourniAS400,dateDoc,codeMagasin,numeroDoc))
 		
 		output.write("BRA|E|||")
 		try:
-			input(correspondance[str(codeClientFourniAS400)])
-			output.write(correspondance[str(codeClientFourniAS400)])
-			# print(correspondance[str(codeClientFourniAS400)])
+			input(correspondance[str(codeFourniAS400)])
+			output.write(correspondance[str(codeFourniAS400)])
+			# print(correspondance[str(codeFourniAS400)])
 		except:
 			print(traceback.format_exc())
 		
