@@ -102,7 +102,7 @@ def main():
 				output.write(str(quantity)) #good quantity
 				output.write("|")
 				# input(line[190:203])
-				output.write(line[190:203]+"|") #price
+				# output.write(line[190:203]+"|") #price
 				output.write("|")
 				output.write("|")
 				# output.write(line[190:203])
@@ -183,3 +183,4 @@ if __name__=="__main__":
 	main()
 
 # aaa="C:\Users\Asus\Desktop\Projects\stageB2m\MLF_31803B.dat"
+#"C:\Users\SUPPORT_COMMERCIAL\Desktop\repo\stageB2m\MLF_31803B.dat"
